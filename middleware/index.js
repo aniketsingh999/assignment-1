@@ -1,3 +1,4 @@
 module.exports = {
-  errorHandler: require('./errorhandler')
+  errorHandler: require('./errorhandler'),
+  authentication: require('./authentication')
 }

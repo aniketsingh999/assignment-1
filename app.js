@@ -8,7 +8,7 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const cors = require('cors')
 const {errorHandler} = require('./middleware')
-const {authRouter} = require('./routers')
+const {authRouter, userRouter} = require('./routers')
 
 const connectDB = require('./db/connect');
 
@@ -18,6 +18,7 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 app.use('/auth',authRouter)
+app.use('/user', userRouter)
 app.use(errorHandler)
 
 const port = process.env.PORT || 5000;
