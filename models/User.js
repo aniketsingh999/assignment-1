@@ -32,7 +32,13 @@ const UserSchema = new mongoose.Schema({
     validate: validator.default.isDate
   },
   offHoursDuration: {
-    type: Number
+    type: Number,
+    validate: {
+      validator: function(value) {
+        return Number.isInteger(value) && value >= 0
+      },
+      message: "{VALUE} is not a positive integer"
+    }
   }
 });
 
