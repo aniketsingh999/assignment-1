@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const MeetingSchema = new mongoose.Schema({
   host: {
     type: mongoose.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   guest: {
     type: mongoose.Types.ObjectId,
+    ref: 'User',
   },
   time: {
     type: Date,
