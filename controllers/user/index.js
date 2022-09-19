@@ -2,5 +2,6 @@ module.exports = {
   updateName: require('./updateName'),
   updatePassword: require('./updatePassword'),
   setOffHours: require('./setOffHours'),
-  getOffHours: require('./getOffHours')
-}
+  getOffHours: require('./getOffHours'),
+  getUser: require('./getUser'),
+};
