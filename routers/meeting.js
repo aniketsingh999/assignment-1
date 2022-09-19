@@ -5,6 +5,7 @@ const {
   updateMeeting,
   getMeetingInvites,
   deleteMeeting,
+  declineMeeting,
 } = require('../controllers/meeting');
 
 const express = require('express');
@@ -18,6 +19,6 @@ meetingRouter.route('/create').post(createMeeting);
 meetingRouter.route('/accept').post(acceptMeeting);
 meetingRouter.route('/update').patch(updateMeeting);
 meetingRouter.route('/invites').get(getMeetingInvites);
-meetingRouter.route('/:meetingId').delete(deleteMeeting);
+meetingRouter.route('/:meetingId').delete(deleteMeeting).post(declineMeeting);
 
 module.exports = meetingRouter;

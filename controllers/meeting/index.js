@@ -5,4 +5,5 @@ module.exports = {
   updateMeeting: require('./updateMeeting'),
   getMeetingInvites: require('./getMeetingInvites'),
   deleteMeeting: require('./deleteMeeting'),
+  declineMeeting: require('./declineMeeting'),
 };
