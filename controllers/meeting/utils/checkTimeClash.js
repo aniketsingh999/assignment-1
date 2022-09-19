@@ -3,116 +3,8 @@ const { User, Meeting } = require('../../../models');
 const checkTimeClash = async (hostId, guestId) => {
   const now = Date.now();
   const tenDaysLater = now + 10 * 24 * 3600;
-  console.log({ now });
-  const host = await User.findById(hostId);
-
-  const offHoursHost = [];
-
-  const userDefinedOffHoursHost = {
-    offHoursStart: new Date(host.offHoursStart).getTime(),
-    offHoursDuration: host.offHoursDuration,
-  };
-
-  if (
-    userDefinedOffHoursHost.offHoursStart &&
-    userDefinedOffHoursHost.offHoursDuration
-  )
-    offHoursHost.push(userDefinedOffHoursHost);
-
-  const meetingsOfHost = await Meeting.find({
-    $or: [
-      { host: hostId },
-      { $and: [{ guest: hostId }, { isConfirmed: true }] },
-    ],
-    $and: [{ time: { $gte: now } }, { time: { $lt: tenDaysLater } }],
-  });
-
-  let offHoursOfHost = [
-    ...offHoursHost,
-    ...meetingsOfHost.map((value) => {
-      const { time: offHoursStart, duration: offHoursDuration } = value;
-      return {
-        offHoursStart: new Date(offHoursStart).getTime(),
-        offHoursDuration,
-      };
-    }),
-  ];
-
-  offHoursOfHost.sort((a, b) => a.offHoursStart - b.offHoursStart);
-
-  const guest = await User.findById(guestId);
-
-  const offHoursGuest = [];
-
-  const userDefinedOffHoursGuest = {
-    offHoursStart: new Date(guest.offHoursStart).getTime(),
-    offHoursDuration: guest.offHoursDuration,
-  };
-
-  if (
-    userDefinedOffHoursGuest.offHoursStart &&
-    userDefinedOffHoursGuest.offHoursDuration
-  )
-    offHoursGuest.push(userDefinedOffHoursGuest);
-
-  const meetingsOfGuest = await Meeting.find({
-    $or: [
-      { host: guestId },
-      { $and: [{ guest: guestId }, { isConfirmed: true }] },
-    ],
-    $and: [{ time: { $gte: now } }, { time: { $lt: tenDaysLater } }],
-  });
-
-  let offHoursOfGuest = [
-    ...offHoursGuest,
-    ...meetingsOfGuest.map((value) => {
-      const { time: offHoursStart, duration: offHoursDuration } = value;
-      return {
-        offHoursStart: new Date(offHoursStart).getTime(),
-        offHoursDuration,
-      };
-    }),
-  ];
-
-  offHoursOfGuest.sort((a, b) => a.offHoursStart - b.offHoursStart);
-
-  const freeTimesHost = [];
-
-  for (let i = 0; i < offHoursOfHost.length; i++) {
-    const start = getEndTime(
-      offHoursOfHost[i].offHoursStart,
-      offHoursOfHost[i].offHoursDuration
-    );
-
-    const duration =
-      (i + 1 === offHoursOfHost.length
-        ? tenDaysLater
-        : offHoursOfHost[i + 1].offHoursStart) - start;
-
-    freeTimesHost.push({ start, duration });
-  }
-
-  if (freeTimesHost.length === 0)
-    freeTimesHost.push({ start: now, duration: tenDaysLater - now });
-
-  const freeTimesGuest = [];
-
-  for (let i = 0; i < offHoursOfGuest.length; i++) {
-    const start = getEndTime(
-      offHoursOfGuest[i].offHoursStart,
-      offHoursOfGuest[i].offHoursDuration
-    );
-
-    const duration =
-      (i + 1 === offHoursOfGuest.length
-        ? tenDaysLater
-        : offHoursOfGuest[i + 1].offHoursStart) - start;
-
-    freeTimesGuest.push({ start, duration });
-  }
-
-  if (freeTimesGuest.length === 0)
-    freeTimesGuest.push({ start: now, duration: tenDaysLater - now });
+  const freeTimesHost = await getFreeTime(hostId, now, tenDaysLater);
+  const freeTimesGuest = await getFreeTime(guestId, now, tenDaysLater);
 
   console.log({ freeTimesHost, freeTimesGuest });
   let i = 0;
@@ -138,8 +30,9 @@ const checkTimeClash = async (hostId, guestId) => {
         freeTimesHost[j].start,
         freeTimesHost[j].duration
       );
-      const duration =
-        (guestEndTime < hostEndTime ? guestEndTime : hostEndTime) - start;
+      const duration = Math.abs(
+        (guestEndTime < hostEndTime ? guestEndTime : hostEndTime) - start
+      );
 
       freeTimesOverlap.push({ start, end: start + duration });
       j++;
@@ -150,6 +43,111 @@ const checkTimeClash = async (hostId, guestId) => {
   console.log(freeTimesOverlap);
 
   return freeTimesOverlap;
+};
+
+const getFreeTime = async (userId, now, tenDaysLater) => {
+  const user = await User.findById(userId);
+
+  const userDefinedOffHours = {
+    offHoursStart: new Date(user.offHoursStart).getTime(),
+    offHoursDuration: user.offHoursDuration,
+  };
+
+  let offHours = [];
+
+  if (
+    userDefinedOffHours.offHoursStart &&
+    now <
+      userDefinedOffHours.offHoursStart + userDefinedOffHours.offHoursDuration
+  ) {
+    let start;
+    let duration;
+
+    if (now <= userDefinedOffHours.offHoursStart) {
+      start = userDefinedOffHours.offHoursStart;
+      duration = userDefinedOffHours.offHoursDuration;
+    } else {
+      start = now;
+      duration =
+        userDefinedOffHours.offHoursStart +
+        userDefinedOffHours.offHoursDuration -
+        now;
+    }
+
+    offHours.push({
+      start,
+      duration,
+    });
+  }
+
+  let meetingsOfUser = await Meeting.find({
+    $or: [
+      { host: userId },
+      { $and: [{ guest: userId }, { isConfirmed: true }] },
+    ],
+    $and: [{ time: { $gte: now - 86400 } }, { time: { $lt: tenDaysLater } }],
+  });
+
+  meetingsOfUser = meetingsOfUser.filter(
+    (meeting) => meeting.start + meeting.duration < now
+  );
+
+  offHours = [
+    ...offHours,
+    ...meetingsOfUser.map((meeting) => {
+      const { time: start, duration } = meeting;
+      return { start, duration };
+    }),
+  ];
+
+  offHours.sort((a, b) => a.start - b.start);
+
+  console.log({ offHours });
+  const freeTimesUser = [];
+
+  if (offHours.length) {
+    if (now < offHours[0].start) {
+      freeTimesUser.push({
+        start: now,
+        duration: offHours[0].start - now,
+      });
+    } else if (
+      now >= offHours[0].start &&
+      now < offHours[0].start + offHours[0].duration
+    ) {
+      freeTimesUser.push({
+        start: now,
+        duration: offHours[0].start + offHours[0].duration - now,
+      });
+    }
+  } else {
+    freeTimesUser.push({
+      start: now,
+      duration: tenDaysLater - now,
+    });
+  }
+
+  for (let i = 0; i < offHours.length - 1; i++) {
+    const start = offHours[i].start + offHours[i].duration;
+    const duration = offHours[i + 1].start - start;
+
+    if (duration > 600) freeTimesUser.push({ start, duration });
+  }
+
+  freeTimesUser.push({
+    start: offHours.length
+      ? offHours[offHours.length - 1].start +
+        offHours[offHours.length - 1].duration
+      : now,
+    duration:
+      tenDaysLater -
+      (offHours.length
+        ? offHours[offHours.length - 1].start +
+          offHours[offHours.length - 1].duration
+        : now),
+  });
+
+  return freeTimesUser;
 };
 
 const getEndTime = (start, duration) => start + duration;
