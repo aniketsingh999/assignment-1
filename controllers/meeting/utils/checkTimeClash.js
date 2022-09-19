@@ -2,7 +2,10 @@ const { User, Meeting } = require('../../../models');
 
 const checkTimeClash = async (hostId, guestId) => {
   const now = Date.now();
-  const tenDaysLater = now + 10 * 24 * 3600;
+  const tenDays = 864000000;
+  let tenDaysLater = Date.now() + tenDays;
+
+  console.log({ tenDaysLater });
   const freeTimesHost = await getFreeTime(hostId, now, tenDaysLater);
   const freeTimesGuest = await getFreeTime(guestId, now, tenDaysLater);
 
@@ -14,7 +17,7 @@ const checkTimeClash = async (hostId, guestId) => {
   while (i < freeTimesGuest.length && j < freeTimesHost.length) {
     while (
       j < freeTimesHost.length &&
-      freeTimesGuest[i].start < freeTimesHost[j].start
+      freeTimesGuest[i].start <= freeTimesHost[j].start
     ) {
       const start =
         freeTimesGuest[i].start > freeTimesHost[j].start
@@ -34,7 +37,7 @@ const checkTimeClash = async (hostId, guestId) => {
         (guestEndTime < hostEndTime ? guestEndTime : hostEndTime) - start
       );
 
-      freeTimesOverlap.push({ start, end: start + duration });
+      freeTimesOverlap.push({ start, end: start + duration, duration });
       j++;
     }
     i++;
@@ -48,8 +51,9 @@ const checkTimeClash = async (hostId, guestId) => {
 const getFreeTime = async (userId, now, tenDaysLater) => {
   const user = await User.findById(userId);
 
+  const offHoursStartDatetmp = new Date(user.offHoursStart);
   const userDefinedOffHours = {
-    offHoursStart: new Date(user.offHoursStart).getTime(),
+    offHoursStart: offHoursStartDatetmp.getTime(),
     offHoursDuration: user.offHoursDuration,
   };
 
