@@ -6,22 +6,32 @@ const getOffHours = async (req, res) => {
 
   const user = await User.findById(userId);
 
-  const offHours = [
-    {
-      offHoursStart: user.offHoursStart,
-      offHoursDuration: user.offHoursDuration,
-    },
-  ];
+  const offHours = [];
+
+  const userDefinedOffHours = {
+    offHoursStart: new Date(user.offHoursStart).getTime(),
+    offHoursDuration: user.offHoursDuration,
+  };
+
+  if (userDefinedOffHours.offHoursStart && userDefinedOffHours.offHoursDuration)
+    offHours.push(userDefinedOffHours);
 
   const meetingsOfUser = await Meeting.find({
-    $or: [{ host: userId }, { guest: userId }],
+    $or: [
+      { host: userId },
+      { $and: [{ guest: userId }, { isConfirmed: true }] },
+    ],
+    time: { $gte: Date.now() },
   });
 
   const offHoursOfUser = [
     ...offHours,
     ...meetingsOfUser.map((value) => {
       const { time: offHoursStart, duration: offHoursDuration } = value;
-      return { offHoursStart, offHoursDuration };
+      return {
+        offHoursStart: new Date(offHoursStart).getTime(),
+        offHoursDuration,
+      };
     }),
   ];
 
