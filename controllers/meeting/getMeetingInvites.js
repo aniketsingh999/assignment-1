@@ -6,6 +6,7 @@ const getMeetingInvites = async (req, res) => {
 
   const invites = await Meeting.find({
     guest: userId,
+    isConfirmed: false,
   });
 
   res.status(StatusCodes.OK).json({ meetings: invites });
