@@ -14,11 +14,11 @@ const meetingRouter = express.Router();
 
 meetingRouter.use(authentication);
 
-meetingRouter.route('/').get(getMeetings);
+meetingRouter.route('/get').post(getMeetings);
 meetingRouter.route('/create').post(createMeeting);
 meetingRouter.route('/accept').post(acceptMeeting);
 meetingRouter.route('/update').patch(updateMeeting);
-meetingRouter.route('/invites').get(getMeetingInvites);
+meetingRouter.route('/invites').post(getMeetingInvites);
 meetingRouter.route('/:meetingId').delete(deleteMeeting).post(declineMeeting);
 
 module.exports = meetingRouter;
