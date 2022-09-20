@@ -1,0 +1,333 @@
+{
+  "info": {
+    "_postman_id": "fb268263-23e0-44ca-8e6d-f31ac790eef3",
+    "name": "nbyula",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Batla\",\n    \"email\": \"batla@gallbaat.com\",\n    \"password\": \"VeryStrongPassword123\",\n    \"phoneNumber\": \"7009221774\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/auth/register",
+              "host": ["{{URL}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify-email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/auth/verifyEmail/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODE2NSwiZXhwIjoxNjYzNjgxNzY1fQ.mO8Wj39haFCopO8fFF6fk01Nwxv3i5cLXjRqnzPptEM",
+              "host": ["{{URL}}"],
+              "path": [
+                "auth",
+                "verifyEmail",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODE2NSwiZXhwIjoxNjYzNjgxNzY1fQ.mO8Wj39haFCopO8fFF6fk01Nwxv3i5cLXjRqnzPptEM"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"batla@gallbaat.com\",\n    \"password\": \"VeryStrongPassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/auth/login",
+              "host": ["{{URL}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "update-name",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\",\n    \"name\": \"lodu\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/user/updateName",
+              "host": ["{{URL}}"],
+              "path": ["user", "updateName"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-password",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\",\n    \"password\": \"VeryStrongPassword123\",\n    \"newPassword\": \"VeryStrongPassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/user/updatePassword",
+              "host": ["{{URL}}"],
+              "path": ["user", "updatePassword"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-off-hours",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/user/offHours",
+              "host": ["{{URL}}"],
+              "path": ["user", "offHours"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "set-off-hours",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\",\n    \"offHoursStartTimestamp\": 1663747200000,\n    \"offHoursDuration\": 14400000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/user/offHours",
+              "host": ["{{URL}}"],
+              "path": ["user", "offHours"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "meeting",
+      "item": [
+        {
+          "name": "get-meeting",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/meeting/get",
+              "host": ["{{URL}}"],
+              "path": ["meeting", "get"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-meeting",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\",\n    \"guest\": \"batla@gallbaat.com\",\n    \"time\": 1663722000000,\n    \"duration\": 3600000,\n    \"agenda\": \"important meeting\",\n    \"title\": \"meeting\"\n\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/meeting/create",
+              "host": ["{{URL}}"],
+              "path": ["meeting", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-meeting",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{     \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\",\n    \"time\": 1663538443895,\n    \"duration\": 36000,\n    \"agenda\": \"updated meeting\",\n    \"title\": \"um\",\n    \"isConfirmed\": true,\n    \"meetingId\": \"63278b7de548c4c952c0b833\" \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/meeting/update",
+              "host": ["{{URL}}"],
+              "path": ["meeting", "update"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "accept-meeting",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\",\n    \"meetingId\":\"63298ac2eeceb379f96652b1\" \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/meeting/accept",
+              "host": ["{{URL}}"],
+              "path": ["meeting", "accept"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-invites",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/meeting/invites",
+              "host": ["{{URL}}"],
+              "path": ["meeting", "invites"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-meeting",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/meeting/63298c6feed1906922f737d1",
+              "host": ["{{URL}}"],
+              "path": ["meeting", "63298c6feed1906922f737d1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "decline-meeting",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"authToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmF0bGEiLCJlbWFpbCI6ImJhdGxhQGdhbGxiYWF0LmNvbSIsInVzZXJJZCI6IjYzMjliNmQ1YzIyNWJmOTY5YzBlMWQxNSIsImlhdCI6MTY2MzY3ODIyMCwiZXhwIjoxNjYzNjgxODIwfQ.6WCiiPKjeeewJetJfElANS38Sb9poSm4FfPzKYtgoXw\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/meeting/6328cb6f505ba95e896de5a2",
+              "host": ["{{URL}}"],
+              "path": ["meeting", "6328cb6f505ba95e896de5a2"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
