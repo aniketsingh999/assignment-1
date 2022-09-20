@@ -1,5 +1,6 @@
 const { Meeting } = require('../../models');
 const { StatusCodes } = require('http-status-codes');
+const { UnauthorizedError } = require('../../errors');
 
 const deleteMeeting = async (req, res) => {
   const { userId: host } = res.locals.user;

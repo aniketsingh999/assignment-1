@@ -89,18 +89,18 @@ const getFreeTime = async (userId, now, tenDaysLater) => {
       { host: userId },
       { $and: [{ guest: userId }, { isConfirmed: true }] },
     ],
-    $and: [{ time: { $gte: now - 86400 } }, { time: { $lt: tenDaysLater } }],
+    $and: [{ time: { $gte: now - 86400000 } }, { time: { $lt: tenDaysLater } }],
   });
 
   meetingsOfUser = meetingsOfUser.filter(
-    (meeting) => meeting.start + meeting.duration < now
+    (meeting) => meeting.time >= now && meeting.isConfirmed
   );
 
   offHours = [
     ...offHours,
     ...meetingsOfUser.map((meeting) => {
       const { time: start, duration } = meeting;
-      return { start, duration };
+      return { start: start.getTime(), duration };
     }),
   ];
 
@@ -135,7 +135,7 @@ const getFreeTime = async (userId, now, tenDaysLater) => {
     const start = offHours[i].start + offHours[i].duration;
     const duration = offHours[i + 1].start - start;
 
-    if (duration > 600) freeTimesUser.push({ start, duration });
+    if (duration > 600000) freeTimesUser.push({ start, duration });
   }
 
   freeTimesUser.push({

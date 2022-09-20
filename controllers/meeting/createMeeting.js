@@ -23,7 +23,8 @@ const createMeeting = async (req, res) => {
   for (let i = 0; i < freeTimesOverlap.length; i++) {
     if (
       freeTimesOverlap[i].start <= time &&
-      freeTimesOverlap[i].start + freeTimesOverlap[i].duration > time + duration
+      freeTimesOverlap[i].start + freeTimesOverlap[i].duration >=
+        time + duration
     ) {
       freeTime = freeTimesOverlap[i];
       break;

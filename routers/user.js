@@ -9,7 +9,7 @@ const { authentication } = require('../middleware');
 const express = require('express');
 
 const userRouter = express.Router();
-userRouter.route('/:userId').get(getUser);
+userRouter.route('/get/:userId').get(getUser);
 userRouter.use(authentication);
 
 userRouter.route('/updateName').patch(updateName);
